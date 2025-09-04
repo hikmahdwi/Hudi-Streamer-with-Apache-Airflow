@@ -9,7 +9,7 @@ with DAG(
 ):
   SparkSubmitOperator(
     task_id="minio_read_test_task",
-    application="jobs/job_spark_readminio.py",
+    application="jobs/jobs_readminio.py",
     conn_id="spark_default",
     packages="org.apache.hadoop:hadoop-aws:3.3.4,com.amazonaws:aws-java-sdk-bundle:1.12.262,org.apache.hudi:hudi-spark3-bundle_2.12:0.15.0",
     verbose=True
