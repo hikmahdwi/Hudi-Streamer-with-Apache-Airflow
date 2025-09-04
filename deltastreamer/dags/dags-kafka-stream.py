@@ -3,7 +3,7 @@ from airflow.sdk import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from datetime import datetime, timedelta
 
-PROPERTIES_FILE_PATH = "configs/kafka-stream.properties"
+PROPERTIES_FILE_PATH = "config/kafka-stream.properties"
 
 with DAG(   
     dag_id="deltastreamer_kuponku_redeem",
