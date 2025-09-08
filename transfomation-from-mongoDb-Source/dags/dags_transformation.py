@@ -4,7 +4,7 @@ from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOpe
 from datetime import datetime, timedelta
 
 PROPERTIES_FILE_PATH = "configs/kafka-hudi-kuponku-redeem.properties"
-JARS_FILE_PATH = "jar/hudi-mongo-transformer-1.0.0.jar"
+JARS_FILE_PATH = "hudi-mongo-transformer-1.0.0.jar"
 
 with DAG(   
     dag_id="deltastreamer_kuponku_redeem",
