@@ -2,14 +2,14 @@ from airflow.sdk import DAG
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 from datetime import datetime, timedelta
 
-MULTITABLE_FOLDER_PATH = "configs/multitable-props/"
-PROPS_FILE_PATH = "configs/kafka-to-multitable-source.properties"
-JARS_FILE_PATH = "jar/hudi-mongo-transformer-multi-1.0.0.jar"
+MULTITABLE_FOLDER_PATH = "/opt/airflow/jobs/configs/multitable-props/"
+PROPS_FILE_PATH = "/opt/airflow/jobs/configs/kafka-to-multitable-source.properties"
+JARS_FILE_PATH = "/opt/airflow/jobs/jar/hudi-mongo-transformer-debug-1.0.0.jar"
 
 with DAG(   
     dag_id="multitable_streamer_kuponku_redeem",
     start_date=datetime(2025, 8, 8),
-    schedule="@once", 
+    schedule="@once", # wiwi can set timedelta(minutes=2) too
     catchup=False,
     tags=["hudi-multitable", "kafka", "delasteamer", "kuponku", "release"],
 ) as dag:
@@ -49,11 +49,11 @@ with DAG(
         application_args=[
             '--props', PROPS_FILE_PATH,
             '--config-folder', MULTITABLE_FOLDER_PATH,
-            '--base-path-prefix', 's3a://advertising-data-lake/hudi-releasing',
+            '--base-path-prefix', 's3a://advertising-data-lake/hudi-kuponku',
             # '--target-base-path', 's3a://advertising-data-lake/hudi-kuponku',
             '--target-table', 'release,requested',
             '--table-type', 'COPY_ON_WRITE',
-            '--source-class', 'org.apache.hudi.utilities.sources.JsonKafkaSource',
+            '--source-class', 'org.apache.hudi.utilities.sources.AvroKafkaSource',
             # '--schemaprovider-class', 'org.apache.hudi.utilities.schema.RowBasedSchemaProvider',
             '--schemaprovider-class', 'org.apache.hudi.utilities.schema.FilebasedSchemaProvider',   
             # '--schemaprovider-class', 'org.apache.hudi.utilities.schema.SchemaRegistryProvider',
@@ -63,4 +63,3 @@ with DAG(
             '--enable-hive-sync',
         ]
     )
-
